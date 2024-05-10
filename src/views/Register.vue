@@ -56,9 +56,10 @@ import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import axios from 'axios'
 import storageService from '@/service/storageService'
 import userService from '@/service/userService'
+import { useStore } from 'vuex'
+
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -118,6 +119,7 @@ const rules = reactive<FormRules<typeof ruleForm>>({
   name:[{trigger:'blur'}], //trigger之后才能计算值
 })
 const router = useRouter()
+const store = useStore()
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
 
@@ -130,12 +132,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
           .then((res)=>{
             //保存token
             // console.log(JSON.stringify(res.data.data.token))
-            storageService.set(storageService.USER_TOKEN,res.data.data.token)
+            store.commit('userModule/SET_TOKEN',res.data.data.token)
+            // storageService.set(storageService.USER_TOKEN,res.data.data.token)
             userService.info().then((response)=>{
               //保存用户信息
-              console.log(response.data.data.user)
+              // console.log(response.data.data.user)
+              store.commit('userModule/SET_USER_INFO',response.data.data.user)
 
-              storageService.set(storageService.USER_INFO,JSON.stringify(response.data.data.user))
+              // storageService.set(storageService.USER_INFO,JSON.stringify(response.data.data.user))
               //跳转主页
               router.replace('home')
 

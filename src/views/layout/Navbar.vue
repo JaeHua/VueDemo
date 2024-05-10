@@ -31,15 +31,18 @@
 
 <script lang="ts" setup>
 import storageService from '@/service/storageService';
+import { useStore } from 'vuex'
+
 import {computed, ref} from 'vue'
 
 const activeIndex = ref('1')
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
-
+const store = useStore()
 const userInfo = computed(()=>{
-  return JSON.parse(storageService.get(storageService.USER_INFO))
+  // return JSON.parse(storageService.get(storageService.USER_INFO))
+  return store.state.userModule.userInfo
 })
 </script>
 
