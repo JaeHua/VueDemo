@@ -32,7 +32,7 @@
 <script lang="ts" setup>
 import storageService from '@/service/storageService';
 import { useStore } from 'vuex'
-
+import {mapState} from "vuex";
 import {computed, ref} from 'vue'
 
 const activeIndex = ref('1')

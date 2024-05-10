@@ -58,7 +58,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import storageService from '@/service/storageService'
 import userService from '@/service/userService'
-import { useStore } from 'vuex'
+import { useStore,mapMutations } from 'vuex'
 
 
 const ruleFormRef = ref<FormInstance>()
@@ -127,31 +127,19 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       // console.log('user:'+ruleForm.name+' '+ruleForm.telephone+' '+ruleForm.pass)
       //请求
+
       const data = {"name":ruleForm.name,"telephone":ruleForm.telephone.toString(),"password":ruleForm.pass}
-      userService.register(data)
-          .then((res)=>{
-            //保存token
-            // console.log(JSON.stringify(res.data.data.token))
-            store.commit('userModule/SET_TOKEN',res.data.data.token)
-            // storageService.set(storageService.USER_TOKEN,res.data.data.token)
-            userService.info().then((response)=>{
-              //保存用户信息
-              // console.log(response.data.data.user)
-              store.commit('userModule/SET_USER_INFO',response.data.data.user)
-
-              // storageService.set(storageService.USER_INFO,JSON.stringify(response.data.data.user))
-              //跳转主页
-              router.replace('home')
-
-            })
-
-          })
+      //dispatch触发action=>mutation
+      store.dispatch('userModule/register',data).then(()=>{
+        //跳转主页
+        router.replace('home')
+      })
           .catch((err)=>{
-            (() => {
-              ElMessage.error('Oops,'+err.response.data.msg)
-            })()
-            // console.log("error:"+JSON.stringify(err.response.data.msg))
-          })
+        (() => {
+          ElMessage.error('Oops,'+err.response.data.msg)
+        })()
+        // console.log("error:"+JSON.stringify(err.response.data.msg))
+      })
     } else {
       //数据验证失败的提示
       (() => {
