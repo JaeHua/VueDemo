@@ -133,11 +133,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
             storageService.set(storageService.USER_TOKEN,res.data.data.token)
             userService.info().then((response)=>{
               //保存用户信息
-              console.log(JSON.stringify(response.data.data.user))
+              console.log(response.data.data.user)
 
-              storageService.set(JSON.stringify(storageService.USER_INFO,response.data.data.user))
+              storageService.set(storageService.USER_INFO,JSON.stringify(response.data.data.user))
               //跳转主页
-              // router.replace('home')
+              router.replace('home')
 
             })
 
