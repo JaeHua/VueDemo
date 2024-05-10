@@ -56,8 +56,10 @@ import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-// import API from "../plugins/axiosInstance"
 import axios from 'axios'
+import storageService from '@/service/storageService'
+import userService from '@/service/userService'
+
 const ruleFormRef = ref<FormInstance>()
 
 const checkTelephone = (rule: any, value: any, callback: any) => {
@@ -123,17 +125,21 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       // console.log('user:'+ruleForm.name+' '+ruleForm.telephone+' '+ruleForm.pass)
       //请求
-      const api = 'http://localhost:3344/api/auth/register'
       const data = {"name":ruleForm.name,"telephone":ruleForm.telephone.toString(),"password":ruleForm.pass}
-      axios.post(api,data,{
-        headers: {
-          'content-type': 'application/json;charset=utf-8'
-        }})
+      userService.register(data)
           .then((res)=>{
             //保存token
             // console.log(JSON.stringify(res.data.data.token))
-            localStorage.setItem('token',res.data.data.token)
-            router.replace('home')
+            storageService.set(storageService.USER_TOKEN,res.data.data.token)
+            userService.info().then((response)=>{
+              //保存用户信息
+              console.log(JSON.stringify(response.data.data.user))
+
+              storageService.set(JSON.stringify(storageService.USER_INFO,response.data.data.user))
+              //跳转主页
+              // router.replace('home')
+
+            })
 
           })
           .catch((err)=>{

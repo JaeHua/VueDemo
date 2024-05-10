@@ -48,7 +48,7 @@ import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-// import API from "../plugins/axiosInstance"
+// import API from "../utils/axiosInstance"
 import axios from 'axios'
 const ruleFormRef = ref<FormInstance>()
 
