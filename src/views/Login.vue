@@ -48,8 +48,7 @@ import { reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-// import API from "../utils/axiosInstance"
-import axios from 'axios'
+import {useStore} from "vuex";
 const ruleFormRef = ref<FormInstance>()
 
 const checkTelephone = (rule: any, value: any, callback: any) => {
@@ -95,6 +94,7 @@ const rules = reactive<FormRules<typeof ruleForm>>({
   telephone: [{ validator: checkTelephone, trigger: 'blur' }],
 })
 const router = useRouter()
+const store = useStore()
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
 
@@ -102,9 +102,20 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       // console.log('user:'+ruleForm.name+' '+ruleForm.telephone+' '+ruleForm.pass)
       //请求
-      const api = 'http://localhost:3344/api/auth/login'
-      // const data = {"name": ruleForm.name, "telephone": ruleForm.telephone.toString(), "password": ruleForm.pass}
-    }else {
+
+      const data = {"telephone":ruleForm.telephone.toString(),"password":ruleForm.pass}
+      //dispatch触发action=>mutation
+      store.dispatch('userModule/login',data).then(()=>{
+        //跳转主页
+        router.replace('home')
+      })
+          .catch((err)=>{
+            (() => {
+              ElMessage.error('Oops,'+err.response.data.msg)
+            })()
+            // console.log("error:"+JSON.stringify(err.response.data.msg))
+          })
+    } else {
       //数据验证失败的提示
       (() => {
         ElMessage({
