@@ -131,7 +131,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         }})
           .then((res)=>{
             //保存token
-            console.log(res.data)
+            // console.log(JSON.stringify(res.data.data.token))
+            localStorage.setItem('token',res.data.data.token)
             router.replace('home')
 
           })
