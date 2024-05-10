@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@element-plus/components": "^0.0.5",
+    "axios": "^1.6.8",
     "element-plus": "^2.7.2",
     "typeit": "^8.8.3",
     "vue": "^3.4.21",
