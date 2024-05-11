@@ -52,6 +52,16 @@ const userModule={
                 });
             });
         },
+        //登出，使得token失效
+        logout(context) {
+            // 清除token
+            context.commit('SET_TOKEN', '');
+            storageService.set(storageService.USER_TOKEN, null);
+            // 清除用户信息
+            context.commit('SET_USERINFO', '');
+            storageService.set(storageService.USER_INFO, null);
+            window.location.reload();
+        },
     }
 }
 export default userModule

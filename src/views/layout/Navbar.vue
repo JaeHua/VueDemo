@@ -21,8 +21,8 @@
     <el-sub-menu v-if="userInfo" index="2" >
       <template #title >{{userInfo.name}}</template>
 
-      <el-menu-item index="2-1" >个人中心</el-menu-item>
-      <el-menu-item index="2-2" >登出</el-menu-item>
+      <el-menu-item index="2-1" @click="$router.replace('profile')">个人中心</el-menu-item>
+      <el-menu-item index="2-2" @click="logout" >登出</el-menu-item>
 <!--      <el-menu-item index="2-3">item three</el-menu-item>-->
 
     </el-sub-menu>
@@ -44,6 +44,9 @@ const userInfo = computed(()=>{
   // return JSON.parse(storageService.get(storageService.USER_INFO))
   return store.state.userModule.userInfo
 })
+const logout =()=>{
+  store.dispatch('userModule/logout')
+}
 </script>
 
 <style scoped>
