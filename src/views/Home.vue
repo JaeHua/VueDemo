@@ -3,32 +3,32 @@
     <el-col :span="3"><div class="grid-content ep-bg-purple" /></el-col>
   <el-col :span="6"><div class="grid-content ep-bg-purple" />
     <el-card id="card" style="max-width: 256px" @click="handleClick">
-      <template #header id="title">GitHub</template>
+      <template #header id="title"><el-text tag="b" size="large">GitHub</el-text></template>
       <img
           src="@/assets/github.png"
           style="width: 100%"
       />
-      赞一个star吧⭐
+      <el-text tag="i">赞一个star吧⭐</el-text>
     </el-card></el-col>
   <el-col :span="6"><div class="grid-content ep-bg-purple" />
     <el-card id="card" style="max-width: 256px">
-      <template #header id="title">Todolist</template>
+      <template #header id="title"><el-text tag="b" size="large">Todolist</el-text></template>
       <img
           src="@/assets/todolist.png"
           style="width: 100%"
       />
-      What's to plan?⭐
+      <el-text tag="i">What's to plan?⭐</el-text>
     </el-card>
 
   </el-col>
     <el-col :span="6"><div class="grid-content ep-bg-purple" />
       <el-card id="card" style="max-width: 256px">
-        <template #header id="title">Nothing</template>
+        <template #header id="title"><el-text tag="b" size="large">Nothing</el-text></template>
         <img
             src="@/assets/more.png"
             style="width: 100%"
         />
-        敬请期待⭐
+        <el-text tag="i">敬请期待⭐</el-text>
       </el-card>
 
     </el-col>

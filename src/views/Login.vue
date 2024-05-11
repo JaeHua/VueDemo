@@ -6,7 +6,7 @@
       <el-card style="max-width: 600px">
         <template #header>
           <div class="card-header">
-            <span>登陆</span>
+            <el-text tag="b" size="large">登陆</el-text>
           </div>
         </template>
         <el-form
