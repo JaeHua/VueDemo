@@ -1,7 +1,7 @@
 
 <template>
   <div v-if="userInfo">hi,{{userInfo.name}}</div>
-  hi
+
 </template>
 <script setup>
 import { useStore } from 'vuex'

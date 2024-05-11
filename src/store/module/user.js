@@ -48,6 +48,7 @@ const userModule={
                     context.commit('SET_USERINFO',res.data.data.user);
                     resolve(res);
                 }).catch((err) => {
+                    console.log('hi')
                     reject(err);
                 });
             });

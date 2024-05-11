@@ -108,12 +108,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       store.dispatch('userModule/login',data).then(()=>{
         //跳转主页
         router.replace('home')
-      })
-          .catch((err)=>{
+      }).catch((err)=>{
             (() => {
+
               ElMessage.error('Oops,'+err.response.data.msg)
             })()
-            // console.log("error:"+JSON.stringify(err.response.data.msg))
           })
     } else {
       //数据验证失败的提示
