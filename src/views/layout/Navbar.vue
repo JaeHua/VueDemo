@@ -10,7 +10,7 @@
     <el-menu-item index="0" @click="$router.replace('home')">
       <img
           style="width: 100px"
-          src="@/assets/img.png"
+          src="@/assets/logo.png"
           alt="Element logo"
       />
     </el-menu-item>
@@ -20,11 +20,13 @@
     <el-menu-item index="1" v-if="$route.name!='Login'&&!userInfo" @click="$router.push({name:'Login'})"><el-text tag="b"><el-icon><Key /></el-icon>登陆</el-text></el-menu-item>
     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 
-    <el-sub-menu v-if="userInfo" index="2" >
+    <el-sub-menu v-if="userInfo" index="2"  >
       <template #title >      <el-avatar
           src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
       /><el-text tag="b">{{userInfo.name}}</el-text></template>
       <el-menu-item index="2-1" @click="$router.replace('profile')"><el-text tag="b"><el-icon><User /></el-icon>个人中心</el-text></el-menu-item>
+      <el-menu-item index="2-3" @click="$router.replace('home')" ><el-text tag="b"><el-icon><House /></el-icon>主页</el-text></el-menu-item>
+
       <el-menu-item index="2-2" @click="logout" ><el-text tag="b"><el-icon><SwitchButton /></el-icon>登出</el-text></el-menu-item>
 <!--      <el-menu-item index="2-3">item three</el-menu-item>-->
 
@@ -48,7 +50,7 @@ const userInfo = computed(()=>{
 const logout =()=>{
   store.dispatch('userModule/logout')
 }
-import { User,SwitchButton,Promotion,Key } from '@element-plus/icons-vue'
+import { User,SwitchButton,Promotion,Key,House,Menu } from '@element-plus/icons-vue'
 </script>
 
 <style scoped>

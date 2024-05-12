@@ -24,7 +24,22 @@ onMounted(() => {
           style="width: 190px "
       />
     </h1>
-
+      <div class="pendulums">
+        <div class="pendulum">
+          <div class="bar"></div>
+          <div class="motion">
+            <div class="string"></div>
+            <div class="weight"></div>
+          </div>
+        </div>
+        <div class="pendulum shadow">
+          <div class="bar"></div>
+          <div class="motion">
+            <div class="string"></div>
+            <div class="weight"></div>
+          </div>
+        </div>
+      </div>
   </el-header>
     <el-main class="parent-container">
       <input type="text"  class="add-content" placeholder="新增待办事项..."/>
@@ -173,6 +188,7 @@ ul, li {
   z-index: 999;
   cursor: pointer;
 }
+
 :root {
   --body-bg: #e8f6ff;
   --border-radius: 12px;
