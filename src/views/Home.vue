@@ -11,8 +11,8 @@
       <el-text tag="i">赞一个star吧⭐</el-text>
     </el-card></el-col>
   <el-col :span="6"><div class="grid-content ep-bg-purple" />
-    <el-card id="card" style="max-width: 256px">
-      <template #header id="title"><el-text tag="b" size="large">Todolist</el-text></template>
+    <el-card id="card" style="max-width: 256px"  @click="$router.replace('todolist')">
+      <template #header id="title" ><el-text tag="b" size="large">Todolist</el-text></template>
       <img
           src="@/assets/todolist.png"
           style="width: 100%"
