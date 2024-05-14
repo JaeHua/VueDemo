@@ -1,29 +1,4 @@
-<script setup>
-import {onBeforeUnmount, onMounted, reactive, ref} from "vue";
-import {useStore} from "vuex";
-const store = useStore()
-
-//todo
-const data = reactive({
-  title:'',
-  status:0,
-  telephone:store.state.userModule.userInfo.telephone,
-})
-
-onMounted(() => {
-  document
-      .querySelector("body")
-      .setAttribute("style", "background-color: #e8f6ff");
-  document.querySelector("body").classList.add("background-dots");
-
-  onBeforeUnmount(() => {
-    document.querySelector("body").removeAttribute("style")
-  })
-});
-</script>
-
 <template>
-
   <el-container class="container">
     <el-header class="_img">
     <h1 >
@@ -51,8 +26,8 @@ onMounted(() => {
       </div>
   </el-header>
     <el-main class="parent-container">
-      <input type="text"  class="add-content" v-model="data.title" placeholder="新增待办事项..."/>
-      <button class="btn submit-btn" type="button" @click="">提交</button>
+      <input type="text"  class="add-content" v-model="data.title" placeholder="新增待办事项..." ref="inputRef"  @keyup.enter="handleSubmit"/>
+      <button class="btn submit-btn" type="button"  @click="handleSubmit">提交</button>
     </el-main>
     <el-main  class="parent-container">
     <div class="todolist_box">
@@ -61,32 +36,30 @@ onMounted(() => {
           今日事今日毕，勿将今事待明日! 🤏🤏
         </div>
       </div>
-<!--      <ul class="empty-tips">-->
-<!--        <li> 添加你的第一个代办事项！📝</li>-->
-<!--        <li>食用方法💡：</li>-->
-<!--        <li>✔️ 所有提交操作支持 Enter 回车键提交~</li>-->
-<!--        <li>✔️ 拖拽 Todo 上下移动可排序(仅支持 PC)~</li>-->
-<!--        <li>✔️ 双击已有的 Todo 可进行编辑~</li>-->
-<!--        <li>✔️ 右侧的小窗口是快捷操作哦~</li>-->
-<!--        <li>🔒 还在搭建...</li></ul>-->
-<!--        <ul class="empty-tips">-->
-<!--        </ul>-->
+
       <ul class="todo-list">
-        <li  class='todo-item'>
-          <div class="todo-content">{{data.title}}</div>
-          <div class="todo-btn btn-finish"></div>
-
-          <div class="todo-btn btn-delete">
+        <ul class="empty-tips" v-if="!todos.length">
+          <li> 添加你的第一个代办事项！📝</li>
+          <li>食用方法💡：</li>
+          <li>✔️ 所有提交操作支持 Enter 回车键提交~</li>
+          <li>✔️ 拖拽 Todo 上下移动可排序(仅支持 PC)~</li>
+          <li>✔️ 双击已有的 Todo 可进行编辑~</li>
+          <li>✔️ 右侧的小窗口是快捷操作哦~</li>
+          <li>🔒 所有的 Todo 数据存储在浏览器本地~</li>
+        </ul>
+        <li  v-for="todo in todos" class='todo-item'>
+          <div class="todo-content" :class='{completed:todo.Status}'>{{todo.Title}}</div>
+          <div class="todo-btn btn-unfinish" v-if="todo.Status" @click="handlePut(todo.ID)">
             <img
-              src="@/assets/x.svg"
-              style="width: 75% "
-          /></div>
-        </li>
-        <li  class='todo-item'>
-          <div class="todo-content">吃饭</div>
-          <div class="todo-btn btn-finish"></div>
+                src="@/assets/finish.svg"
+                style="width: 100%;margin-top: 15% "
+            />
+          </div>
+          <div class="todo-btn btn-finish" v-if="!todo.Status"  @click="handlePut(todo.ID)">
 
-          <div class="todo-btn btn-delete">
+          </div>
+
+          <div class="todo-btn btn-delete" @click="handleDelete(todo.ID)">
             <img
                 src="@/assets/x.svg"
                 style="width: 75% "
@@ -101,10 +74,90 @@ onMounted(() => {
   </el-container>
 
 </template>
+<script setup>
+import {onBeforeUnmount, onMounted, reactive, ref} from "vue";
+import {useStore} from "vuex";
+import postTodo from "@/service/todoListService"
+import getTodo from "@/service/todoListService"
+import deleteTodo from "@/service/todoListService"
+import updateTodo from "@/service/todoListService"
+import { h } from 'vue'
+import { ElNotification } from 'element-plus'
+const store = useStore()
+const todos = ref([]);
 
+//侧边弹窗
+const open1 = () => {
+  ElNotification({
+    title: 'Tips',
+    message: h('i', { style: 'color: teal' }, 'todo不能为空哦'),
+  })
+}
+//todo结构体
+const data = reactive({
+  title:'',
+  status:0,
+  telephone:store.state.userModule.userInfo.telephone,
+})
+
+//绑定输入框的值
+const inputRef = ref(null);
+
+//点击post操作
+const handleSubmit = () => {
+  if (data.title==='')
+  {
+    open1()
+    return
+  }
+  postTodo.postTodo(data).then(()=>{
+    getTodo.getTodo().then((response) => {
+      todos.value = response.data.data.todos;
+    });
+  });
+  inputRef.value.value = ""; // 清空输入框值
+  data.title = ""; //数据也不要了
+};
+
+//delete操作
+const handleDelete = (id) =>{
+  deleteTodo.deleteTodo(id).then(() => {
+    getTodo.getTodo().then((response) => {
+      todos.value = response.data.data.todos;
+    });
+  })
+}
+
+//put操作
+const handlePut = (id)=>{
+  updateTodo.updateTodo(id).then(() => {
+    getTodo.getTodo().then((response) => {
+      todos.value = response.data.data.todos;
+    });
+  })
+}
+onMounted(() => {
+  //背景设置
+  document
+      .querySelector("body")
+      .setAttribute("style", "background-color: #e8f6ff");
+  document.querySelector("body").classList.add("background-dots");
+
+  // 挂载获取数据
+  getTodo.getTodo().then((response) => {
+    todos.value = response.data.data.todos;
+  });
+
+  //获得光标焦点
+  inputRef.value.focus()
+
+  //背景移除
+  onBeforeUnmount(() => {
+    document.querySelector("body").removeAttribute("style")
+  })
+});
+</script>
 <style scoped>
-
-
 
 .container{
   margin-top: 20px;
@@ -174,7 +227,7 @@ onMounted(() => {
   transition: all .5s ease;
   max-width: 100%;
   width: 48%;
-  height: 350px;
+  height: auto;
   overflow: hidden;
 }
 .bar-message {
@@ -198,42 +251,45 @@ onMounted(() => {
   text-align: left;
   max-width: 480px;
   width: 90%;
-  margin: 20px auto 50px 25px ;
+  margin: 10px auto  ;
 
   top: 15%;
   left: 2%;
   font-size: 16px;
   color: #606060;
-  line-height: 1.6;
-  letter-spacing: 1px;
+  line-height: 10px;
+  letter-spacing: 1.8px;
 }
 ul, li {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  line-height: 1;
 }
 .side-bar {
-  left: calc(100% + 28px);
+  right: 100px;
   top: 0;
   height: 30px;
   font-size: 18px;
-  display: flex;
-  margin: -300px 200px auto auto ;
+  width: 85px;
+  margin-top: -20%;
+  margin-left: 80%;
   justify-content: flex-start;
   align-items: flex-start;
-  flex-direction: column;
   border: 2px solid #33322E;
   background: #dceebc;
   box-shadow: 4px 4px 0 #33322E;
   text-align: center;
   transition: all .3s;
-  overflow: hidden;
   z-index: 999;
-  cursor: pointer;
+}
+.side-bar:hover{
+  box-shadow: 0 0 0 0 #33322E;
+
 }
 .todo-list {
   padding: 32px 36px 36px;
-  min-height: 381px;
+  min-height: 300px;
   transition: all .5s ease;
 
 }
@@ -261,7 +317,7 @@ ul, li {
 .btn-finish {
   position: relative;
   margin-top: -55px;
-  left: 15px;
+  left: 3%;
   top: 10px;
   width: 25px;
   height: 25px;
@@ -298,8 +354,9 @@ ul, li {
 .btn-delete {
   position: relative;
   background: #fff;
-  left: 525px;
   top: -17px;
+
+  right: -90%;
   height: 25px;
   width: 25px;
   border-radius: 12px;
@@ -313,6 +370,27 @@ ul, li {
 .btn-delete:hover{
   box-shadow: 4px 4px 0 #33322E;
   transform: translate(-5px, -5px);
+}
+.completed {
+  background: #D0F4F0;
+  color: rgba(51,50,46,.535);
+  text-decoration: line-through;
+}
+.btn-unfinish {
+  position: relative;
+  margin-top: -55px;
+  left: 3%;
+  top: 10px;
+  width: 25px;
+  height: 25px;
+  border-radius: 20px;
+  z-index: 9999;
+  background: #8CD4CB;
+}
+.btn-unfinish:hover{
+  box-shadow: -4px 4px 0 #33322E;
+  transform: translate(5px, -5px);
+
 }
 :root {
   --body-bg: #e8f6ff;
