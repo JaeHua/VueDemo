@@ -51,6 +51,7 @@ import { ElMessage } from 'element-plus'
 import {useStore} from "vuex";
 const ruleFormRef = ref<FormInstance>()
 
+//电话验证
 const checkTelephone = (rule: any, value: any, callback: any) => {
   if (!value) {
     return callback(new Error('Please input the telephone'))
@@ -70,7 +71,7 @@ const checkTelephone = (rule: any, value: any, callback: any) => {
   }, 100)
 
 }
-
+//密码验证
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password'))
@@ -93,8 +94,10 @@ const rules = reactive<FormRules<typeof ruleForm>>({
   pass: [{ validator: validatePass, trigger: 'blur' }],
   telephone: [{ validator: checkTelephone, trigger: 'blur' }],
 })
+
 const router = useRouter()
 const store = useStore()
+//提交
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
 
@@ -102,7 +105,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       // console.log('user:'+ruleForm.name+' '+ruleForm.telephone+' '+ruleForm.pass)
       //请求
-
       const data = {"telephone":ruleForm.telephone.toString(),"password":ruleForm.pass}
       //dispatch触发action=>mutation
       store.dispatch('userModule/login',data).then(()=>{
@@ -110,7 +112,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         router.replace('home')
       }).catch((err)=>{
             (() => {
-
               ElMessage.error('Oops,'+err.response.data.msg)
             })()
           })
@@ -122,7 +123,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
           type: 'warning',
         })
       })()
-
       // throw new Error('Validation failed')
     }
   })

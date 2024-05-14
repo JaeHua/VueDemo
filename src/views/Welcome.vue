@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import {ref, onMounted, watch, onBeforeUnmount} from 'vue'
 import { DArrowRight } from '@element-plus/icons-vue'
 
 const message = ref('')
@@ -26,6 +26,17 @@ watch(message, () => {
 
 onMounted(() => {
   typeWriter()
+    //背景设置
+    document
+        .querySelector("body")
+        .setAttribute("style", "background-color: #e8f6ff");
+    document.querySelector("body").classList.add("background-dots");
+
+    //背景移除
+    onBeforeUnmount(() => {
+      document.querySelector("body").removeAttribute("style")
+    })
+
 })
 </script>
 

@@ -4,7 +4,6 @@
     <el-container class="container">
       <el-header class="_img">
         <h1 >
-
           <img
               src="@/assets/profile.png"
               style="width: 100px "
@@ -28,19 +27,14 @@
       </el-main>
     </el-container>
 </template>
+
 <script setup>
 import { useStore } from 'vuex'
 import {computed} from "vue";
 const store = useStore()
 const userInfo = computed(()=>{
-  // return JSON.parse(storageService.get(storageService.USER_INFO))
   return store.state.userModule.userInfo
 })
-import { ref } from 'vue'
-import user from "../store/module/user.js";
-
-const activeName = ref('1')
-
 </script>
 
 <style scoped>
@@ -103,6 +97,7 @@ ul, li {
   margin: 0;
   padding: 0;
 }
+
 @keyframes slide {
   0% {
     transform: translateY(0);

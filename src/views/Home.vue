@@ -34,13 +34,11 @@
     </el-col>
   </el-row>
 </template>
+
 <script setup>
-import { useStore } from 'vuex'
 const handleClick = () =>{
   window.location.href = 'https://github.com/JaeHua';
 }
-const store = useStore()
-
 
 </script>
 <style scoped>

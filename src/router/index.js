@@ -3,7 +3,6 @@
     import {jwtDecode} from "jwt-decode";
 
     // 路由数组
-
     const routes = [
         {
             path: '/',
@@ -63,10 +62,12 @@
 
     router.beforeEach((to, from, next) => {
         const store = useStore()
+        //无这个路由跳转404
         if(to.matched.length===0){
             next({name:'404'})
         }else {
-            if (to.meta['auth']) { // 判断是否需要登录
+            // 判断是否需要登录
+            if (to.meta['auth']) {
                 //判断用户是否登录
                 if (store.state.userModule.token !== 'null') {
                     // 这里还要判断token的有效性，比如有没有过期，需要后台发放token的时候携带的有效期
@@ -74,18 +75,16 @@
                     const token = store.state.userModule.token
                     const decoded = jwtDecode(token)
                     if(Date.now() >= decoded.exp*1000) {
-                        // token已过期
+                        // token已过期，清除token
                         store.dispatch('userModule/logout').then(()=>{
                             next({name: 'Login'})
-                        }) // 清除token
+                        })
                     } else {
                         next()
                     }
                 } else {
-
-                    next({name: 'Login'})
                     // 跳转登录
-
+                    next({name: 'Login'})
                 }
             } else {
                 next();

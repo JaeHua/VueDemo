@@ -58,9 +58,8 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useStore, } from 'vuex'
 
-
 const ruleFormRef = ref<FormInstance>()
-
+//电话验证
 const checkTelephone = (rule: any, value: any, callback: any) => {
   if (!value) {
     return callback(new Error('Please input the telephone'))
@@ -80,7 +79,7 @@ const checkTelephone = (rule: any, value: any, callback: any) => {
   }, 100)
 
 }
-
+//密码验证
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password'))
@@ -93,6 +92,7 @@ const validatePass = (rule: any, value: any, callback: any) => {
     }
   }
 }
+//密码重复验证
 const validatePass2 = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please input the password again'))
