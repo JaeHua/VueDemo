@@ -1,9 +1,9 @@
 <template>
   <el-row :gutter="20">
 <!--    布局对齐tips-->
-    <el-col :span="7"><div class="grid-content ep-bg-purple" /></el-col>
-    <el-col :span="17"><div class="grid-content ep-bg-purple" />
-      <el-card style="max-width: 600px">
+    <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
+    <el-col :span="15"><div class="grid-content ep-bg-purple" />
+      <el-card style="max-width: 500px">
         <template #header>
           <div class="card-header">
             <span>注册</span>
@@ -18,23 +18,42 @@
             label-width="auto"
             class="demo-ruleForm"
         >
-          <el-form-item label="Name" prop="name" >
-            <el-input v-model="ruleForm.name" />
+          <el-form-item label="用户名" prop="name" >
+            <el-input v-model="ruleForm.name" placeholder="选填" />
           </el-form-item>
-          <el-form-item label="Telephone" prop="telephone" >
+          <el-form-item label="QQ号" prop="telephone" >
             <el-input v-model.number="ruleForm.telephone" />
           </el-form-item>
-          <el-form-item label="Password" prop="pass">
+          <el-form-item label="密码" prop="pass">
             <el-input v-model="ruleForm.pass" type="password" autocomplete="off" />
           </el-form-item>
-          <el-form-item label="Confirm" prop="checkPass">
+          <el-form-item label="确认密码" prop="checkPass">
             <el-input
                 v-model="ruleForm.checkPass"
                 type="password"
                 autocomplete="off"
             />
           </el-form-item>
-
+          <el-form-item label="验证码" prop="">
+            <el-input
+                v-model="ruleForm.vCode"
+                type="number"
+                autocomplete="off"
+                style="width: 40%"
+            />
+            <el-button
+                type="primary"
+                :disabled="disableResend"
+                @click="submitVerify"
+            >
+              <span v-if="disableResend">
+                {{ countdown }}s
+              </span>
+              <span v-else>
+                Send
+              </span>
+            </el-button>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm(ruleFormRef)">
               Submit
@@ -57,27 +76,28 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useStore, } from 'vuex'
+import sendVerifyCode from '@/service/emailService'
+import verifyTheCode from '@/service/emailService'
 
 const ruleFormRef = ref<FormInstance>()
 //电话验证
 const checkTelephone = (rule: any, value: any, callback: any) => {
   if (!value) {
-    return callback(new Error('Please input the telephone'))
+    return callback(new Error('请输入QQ号'))
   }
   setTimeout(() => {
     if (!Number.isInteger(value)) {
       callback(new Error('Please input digits'))
     } else {
       value = value + '' //转变为字符串
-      if (value.length != 11) {
+      if (value.length < 6 || value.length>11) {
         // console.log("length:"+value.length)
-        callback(new Error('电话格式错误'))
+        callback(new Error('QQ格式错误'))
       } else {
         callback()
       }
     }
   }, 100)
-
 }
 //密码验证
 const validatePass = (rule: any, value: any, callback: any) => {
@@ -102,19 +122,53 @@ const validatePass2 = (rule: any, value: any, callback: any) => {
     callback()
   }
 }
-
+//验证验证码
+const checkvCode = (rule: any, value: any, callback: any) =>{
+  if (value === '') {
+    callback(new Error('请输入验证码'))
+  } else if (value.length !== 6) {
+    callback(new Error("验证码应该为6位"))
+  } else {
+    callback()
+  }
+}
 const ruleForm = reactive({
   pass: '',
   checkPass: '',
   telephone: '',
   name:'',
+  vCode:'',
 })
+
+//验证码逻辑
+const countdown = ref(0);
+const disableResend = ref(false);
+let timer = null;
+const startCountdown = () => {
+  timer = setInterval(() => {
+    countdown.value--;
+    if (countdown.value === 0) {
+      clearInterval(timer);
+      disableResend.value = false;
+    }
+  }, 1000);
+};
+
+const submitVerify= () => {
+  // 发送验证码逻辑
+  sendVerifyCode.sendVerifyCode({"mail":ruleForm.telephone.toString()+"@qq.com"})
+  // 启动倒计时
+  countdown.value = 60;
+  disableResend.value = true;
+  startCountdown();
+};
 
 const rules = reactive<FormRules<typeof ruleForm>>({
   pass: [{ validator: validatePass, trigger: 'blur' }],
   checkPass: [{ validator: validatePass2, trigger: 'blur' }],
   telephone: [{ validator: checkTelephone, trigger: 'blur' }],
   name:[{trigger:'blur'}], //trigger之后才能计算值
+  vCode:[{validator:checkvCode,trigger:'blur'}]
 })
 const router = useRouter()
 const store = useStore()
@@ -125,19 +179,34 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       // console.log('user:'+ruleForm.name+' '+ruleForm.telephone+' '+ruleForm.pass)
       //请求
+      // console.log("vcode",Vcode.value)
 
-      const data = {"name":ruleForm.name,"telephone":ruleForm.telephone.toString(),"password":ruleForm.pass}
-      //dispatch触发action=>mutation
-      store.dispatch('userModule/register',data).then(()=>{
-        //跳转主页
-        router.replace('home')
+      verifyTheCode.verifyTheCode({"mail":ruleForm.telephone.toString()+"@qq.com","vcode":ruleForm.vCode}).then((response)=>{
+        if (response.status===200)
+        {
+          const data = {"name":ruleForm.name,"telephone":ruleForm.telephone.toString(),"password":ruleForm.pass}
+          //dispatch触发action=>mutation
+          store.dispatch('userModule/register',data).then(()=>{
+            //跳转主页
+            router.replace('home')
+          })
+              .catch((err)=>{
+            (() => {
+              ElMessage.error('Ops,'+err.response.data.msg)
+            })()
+
+          })
+        }else
+        {
+          (() => {
+            ElMessage({
+              message: '验证码有误.',
+              type: 'warning',
+            })
+          })()
+        }
       })
-          .catch((err)=>{
-        (() => {
-          ElMessage.error('Oops,'+err.response.data.msg)
-        })()
-        // console.log("error:"+JSON.stringify(err.response.data.msg))
-      })
+
     } else {
       //数据验证失败的提示
       (() => {
@@ -146,8 +215,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
           type: 'warning',
         })
       })()
-
-      // throw new Error('Validation failed')
     }
   })
 }

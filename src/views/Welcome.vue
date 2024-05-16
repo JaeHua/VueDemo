@@ -30,7 +30,7 @@ onMounted(() => {
     document
         .querySelector("body")
         .setAttribute("style", "background-color: #e8f6ff");
-    document.querySelector("body").classList.add("background-dots");
+
 
     //背景移除
     onBeforeUnmount(() => {

@@ -19,7 +19,7 @@
           </div>
           <ul class="empty-tips">
             <li>✔️ 用户名:{{userInfo.name}}</li>
-            <li>✔️ 电话号码:{{userInfo.telephone}}</li>
+            <li>✔️ QQ:{{userInfo.telephone}}</li>
 
             <li>🔒</li></ul>
 

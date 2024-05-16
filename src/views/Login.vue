@@ -1,9 +1,9 @@
 <template>
   <el-row :gutter="20">
     <!--    布局对齐tips-->
-    <el-col :span="7"><div class="grid-content ep-bg-purple" /></el-col>
-    <el-col :span="17"><div class="grid-content ep-bg-purple" />
-      <el-card style="max-width: 600px">
+    <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
+    <el-col :span="15"><div class="grid-content ep-bg-purple" />
+      <el-card style="max-width: 500px">
         <template #header>
           <div class="card-header">
             <el-text tag="b" size="large">登陆</el-text>
@@ -19,7 +19,7 @@
             class="demo-ruleForm"
         >
 
-          <el-form-item label="Telephone" prop="telephone" >
+          <el-form-item label="QQ" prop="telephone" >
             <el-input v-model.number="ruleForm.telephone" />
           </el-form-item>
           <el-form-item label="Password" prop="pass">

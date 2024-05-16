@@ -110,11 +110,13 @@ const handleSubmit = () => {
     open1()
     return
   }
-  postTodo.postTodo(data).then(()=>{
-    getTodo.getTodo().then((response) => {
-      todos.value = response.data.data.todos;
-    });
-  });
+  console.log(data)
+  postTodo.postTodo(data)
+      .then(()=>{
+        getTodo.getTodo().then((response) => {
+          todos.value = response.data.data.todos;
+        });
+      });
   inputRef.value.value = ""; // 清空输入框值
   data.title = ""; //数据也不要了
 };
