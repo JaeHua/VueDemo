@@ -80,7 +80,8 @@ import sendVerifyCode from '@/service/emailService'
 import verifyTheCode from '@/service/emailService'
 
 const ruleFormRef = ref<FormInstance>()
-//电话验证
+
+//QQ验证
 const checkTelephone = (rule: any, value: any, callback: any) => {
   if (!value) {
     return callback(new Error('请输入QQ号'))
@@ -99,6 +100,7 @@ const checkTelephone = (rule: any, value: any, callback: any) => {
     }
   }, 100)
 }
+
 //密码验证
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
@@ -122,6 +124,7 @@ const validatePass2 = (rule: any, value: any, callback: any) => {
     callback()
   }
 }
+
 //验证验证码
 const checkvCode = (rule: any, value: any, callback: any) =>{
   if (value === '') {
@@ -132,6 +135,7 @@ const checkvCode = (rule: any, value: any, callback: any) =>{
     callback()
   }
 }
+
 const ruleForm = reactive({
   pass: '',
   checkPass: '',
@@ -144,6 +148,8 @@ const ruleForm = reactive({
 const countdown = ref(0);
 const disableResend = ref(false);
 let timer = null;
+
+//验证码发送倒计时
 const startCountdown = () => {
   timer = setInterval(() => {
     countdown.value--;
@@ -163,6 +169,7 @@ const submitVerify= () => {
   startCountdown();
 };
 
+//验证规则
 const rules = reactive<FormRules<typeof ruleForm>>({
   pass: [{ validator: validatePass, trigger: 'blur' }],
   checkPass: [{ validator: validatePass2, trigger: 'blur' }],
@@ -170,8 +177,14 @@ const rules = reactive<FormRules<typeof ruleForm>>({
   name:[{trigger:'blur'}], //trigger之后才能计算值
   vCode:[{validator:checkvCode,trigger:'blur'}]
 })
+
+//路由
 const router = useRouter()
+
+//vuex中store
 const store = useStore()
+
+//提交注册
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
 
@@ -182,6 +195,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       // console.log("vcode",Vcode.value)
 
       verifyTheCode.verifyTheCode({"mail":ruleForm.telephone.toString()+"@qq.com","vcode":ruleForm.vCode}).then((response)=>{
+        //验证码验证成功
         if (response.status===200)
         {
           const data = {"name":ruleForm.name,"telephone":ruleForm.telephone.toString(),"password":ruleForm.pass}
