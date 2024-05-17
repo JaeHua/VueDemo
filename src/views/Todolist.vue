@@ -1,5 +1,5 @@
 <template>
-  <el-container class="container">
+  <el-container class="container "style="margin-left: 4%">
     <el-header class="_img">
     <h1 >
 
@@ -42,10 +42,8 @@
           <li> 添加你的第一个代办事项！📝</li>
           <li>食用方法💡：</li>
           <li>✔️ 所有提交操作支持 Enter 回车键提交~</li>
-          <li>✔️ 拖拽 Todo 上下移动可排序(仅支持 PC)~</li>
           <li>✔️ 双击已有的 Todo 可进行编辑~</li>
-          <li>✔️ 右侧的小窗口是快捷操作哦~</li>
-          <li>🔒 所有的 Todo 数据存储在浏览器本地~</li>
+          <li>🔒 所有的 Todo 数据存储在远程数据库~</li>
         </ul>
         <li  v-for="todo in todos" class='todo-item'>
           <div class="todo-content" :class='{completed:todo.Status}'>{{todo.Title}}</div>

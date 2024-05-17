@@ -45,7 +45,7 @@
             component: ()=>import('../views/Profile.vue'),
             meta: { title: 'Profile',
                 auth:true,
-                showNav:true}
+                showNav:false}
         },
         {
             path: '/todolist',
