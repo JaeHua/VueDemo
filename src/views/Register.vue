@@ -1,73 +1,133 @@
 <template>
-  <el-row :gutter="20">
-<!--    布局对齐tips-->
-    <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
-    <el-col :span="15"><div class="grid-content ep-bg-purple" />
-      <img src="@/assets/logo.png" width="15%" style="margin-left: 21%">
-      <el-card style="max-width: 500px">
-        <template #header>
-          <div class="card-header">
-            <span style="font-size: 20px;margin-left: 27%;font-weight: bold;color: black;">Create your account</span>
-          </div>
-        </template>
-        <el-form
-            ref="ruleFormRef"
-            style="max-width: 100%"
-            :model="ruleForm"
-            status-icon
-            :rules="rules"
-            label-width="auto"
-            class="demo-ruleForm"
-        >
-          <el-form-item label="用户名" prop="name" >
-            <el-input v-model="ruleForm.name" placeholder="选填" />
-          </el-form-item>
-          <el-form-item label="QQ号" prop="telephone" >
-            <el-input v-model.number="ruleForm.telephone" />
-          </el-form-item>
-          <el-form-item label="密码" prop="pass">
-            <el-input v-model="ruleForm.pass" type="password" autocomplete="off" />
-          </el-form-item>
-          <el-form-item label="确认密码" prop="checkPass">
-            <el-input
-                v-model="ruleForm.checkPass"
-                type="password"
-                autocomplete="off"
-            />
-          </el-form-item>
-          <el-form-item label="验证码" prop="">
-            <el-input
-                v-model="ruleForm.vCode"
-                type="number"
-                autocomplete="off"
-                style="width: 40%"
-            />
-            <el-button
-                type="primary"
-                :disabled="disableResend"
-                @click="submitVerify"
-            >
-              <span v-if="disableResend">
-                {{ countdown }}s
-              </span>
-              <span v-else>
-                Send
-              </span>
-            </el-button>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="submitForm(ruleFormRef)">
-              Submit
-            </el-button>
-            <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
-          </el-form-item>
-        </el-form>
-        <template #footer>已有账号？ <el-link type="primary" href="/login">前往登陆</el-link></template>
-      </el-card>
-    </el-col>
+  <div class="min-h-screen flex items-center justify-center bg-[#f4f7f6]">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-12 bg-white shadow-lg rounded-lg max-w-6xl">
+      <div class="flex flex-col justify-between">
+        <div class="space-y-6">
+          <img
+              src="@/assets/logo.png"
+              alt="Connexial Logistics"
+              class="h-15 w-40"
+              width="200"
+              height="60"
+              style="aspect-ratio: 200 / 60; object-fit: cover;"
+          />
+          <el-form
+              ref="ruleFormRef"
+              style="max-width: 100%"
+              :model="ruleForm"
+              status-icon
+              :rules="rules"
+              label-width="auto"
+              class="demo-ruleForm"
 
-  </el-row>
+          >
+            <div class="space-y-4">
+              <div class="space-y-2">
+                <label
+                    class="text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  用户名
+                </label>
+                          <el-form-item  prop="name" >
+                            <el-input v-model="ruleForm.name" placeholder="选填" />
+                          </el-form-item>
+              </div>
+              <div class="space-y-2">
+                <label
+                    class="text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  QQ Number
+                </label>
+                <el-form-item  prop="telephone" >
+                  <el-input v-model.number="ruleForm.telephone" />
+                </el-form-item>
+              </div>
+              <div class="space-y-2">
+                <label
+                    class="text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Password
+                </label>
+                <el-form-item prop="pass">
+                  <el-input v-model="ruleForm.pass" type="password" autocomplete="off" />
+                </el-form-item>
+              </div>
+              <div class="space-y-2">
+              <label
+                  class="text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Confirm
+              </label>
+                <el-form-item prop="checkPass">
+                  <el-input
+                      v-model="ruleForm.checkPass"
+                      type="password"
+                      autocomplete="off"
+                  />
+                </el-form-item>
+              </div>
+                <div class="space-y-2">
+                  <label
+                      class="text-sm font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    验证码
+                  </label>
+                  <el-form-item prop="">
+                    <el-input
+                        v-model="ruleForm.vCode"
+                        type="number"
+                        autocomplete="off"
+                        style="width: 40%"
+                    />
+                    <el-button
+                        type="primary"
+                        :disabled="disableResend"
+                        @click="submitVerify"
+                    >
+                      <span v-if="disableResend">
+                        {{ countdown }}s
+                      </span>
+                      <span v-else>
+                        Send
+                      </span>
+                    </el-button>
+                  </el-form-item>
+                </div>
 
+              <div style="margin-top: 10%">
+                <button type = "button" @click="submitForm(ruleFormRef)" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-opacity-80 h-10 px-4 py-2 bg-[#e53e3e] text-white w-full">
+                  Register
+                </button>
+              </div>
+            </div>
+          </el-form>
+          <a class="text-[#e53e3e] block text-center" href="/login">
+            Already have an account?
+          </a>
+        </div>
+        <div class="text-center text-xs text-gray-500">
+          © 2024 GoKits, Inc. All rights reserved.
+          <a class="text-[#e53e3e]" href="#">
+            Privacy Policy
+          </a>
+        </div>
+      </div>
+      <div class="flex flex-col justify-center bg-[#2c5282] text-white p-12 rounded-lg">
+        <h2 class="text-3xl font-bold mb-4">Welcome to GoKits</h2>
+        <p class="mb-6">
+          GoKits front-end and back-end separation project demo project, is gradually developing new features.
+        </p>
+
+        <img
+            alt="Cityscape"
+            class="mt-8 rounded-lg shadow-lg"
+            src="@/assets/blue1.jpg"
+            width="500px"
+            style="aspect-ratio: 400 / 200; object-fit: cover;"
+        />
+      </div>
+    </div>
+  </div>
 
 </template>
 
@@ -232,11 +292,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       })()
     }
   })
-}
-
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
 }
 
 </script>
