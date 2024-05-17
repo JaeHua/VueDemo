@@ -1,6 +1,6 @@
 <script setup>
 import Navbar from "@/views/layout/Navbar.vue";
-
+import '@/index.css'
 </script>
 
 <template>

@@ -30,7 +30,7 @@
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-[80%] md:w-[60%] lg:w-[40%] p-8 h-auto min-h-[400px] flex flex-col items-center justify-center">
       <div class="flex flex-col items-center">
       <span class="relative flex shrink-0 overflow-hidden rounded-full h-32 w-32 mb-6">
-        <span class="flex h-full w-full items-center justify-center rounded-full bg-muted">JP</span>
+        <img src="@/assets/tou.png"  />
       </span>
         <div class="text-center">
           <h2 class="text-3xl font-bold mb-2"> {{userInfo.name}}</h2>
