@@ -30,14 +30,14 @@
             name: 'Register',
             component: ()=>import('../views/Register.vue'),
             meta: { title: 'Register',
-                showNav:true}
+                showNav:false}
         },
         {
             path: '/login',
             name: 'Login',
             component: ()=>import('../views/Login.vue'),
             meta: { title: 'Login',
-                showNav:true}
+                showNav:false}
         },
         {
             path: '/profile',

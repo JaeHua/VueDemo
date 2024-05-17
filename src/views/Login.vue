@@ -3,6 +3,7 @@
     <!--    布局对齐tips-->
     <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
     <el-col :span="15"><div class="grid-content ep-bg-purple" />
+      <img src="@/assets/logo.png" width="15%" style="margin-left: 21%">
       <el-card style="max-width: 500px">
         <template #header>
           <div class="card-header">
@@ -61,9 +62,9 @@ const checkTelephone = (rule: any, value: any, callback: any) => {
       callback(new Error('Please input digits'))
     } else {
       value = value + '' //转变为字符串
-      if (value.length != 11) {
+      if (value.length < 6 || value.length>11) {
         // console.log("length:"+value.length)
-        callback(new Error('电话格式错误'))
+        callback(new Error('QQ格式错误'))
       } else {
         callback()
       }

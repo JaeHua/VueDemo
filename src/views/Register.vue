@@ -3,10 +3,11 @@
 <!--    布局对齐tips-->
     <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
     <el-col :span="15"><div class="grid-content ep-bg-purple" />
+      <img src="@/assets/logo.png" width="15%" style="margin-left: 21%">
       <el-card style="max-width: 500px">
         <template #header>
           <div class="card-header">
-            <span>注册</span>
+            <span style="font-size: 20px;margin-left: 27%;font-weight: bold;color: black;">Create your account</span>
           </div>
         </template>
         <el-form

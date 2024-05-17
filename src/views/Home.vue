@@ -2,7 +2,7 @@
   <el-row :gutter="20">
     <el-col :span="3"><div class="grid-content ep-bg-purple" /></el-col>
   <el-col :span="6"><div class="grid-content ep-bg-purple" />
-    <el-card id="card" style="max-width: 256px" @click="handleClick">
+    <el-card id="card" style="max-width: 256px;" @click="handleClick">
       <template #header id="title"><el-text tag="b" size="large">GitHub</el-text></template>
       <img
           src="@/assets/github.png"
@@ -33,6 +33,7 @@
 
     </el-col>
   </el-row>
+
 </template>
 
 <script setup>
@@ -48,4 +49,11 @@ const handleClick = () =>{
   font-family: 'Helvetica Neue Bold', Helvetica, Arial, sans-serif;
 }
 #card:hover { cursor: pointer; background-color: #e8f0fe; }
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+
 </style>
