@@ -1,7 +1,7 @@
 <template>
 
 
-  <div class="text-blue-400 text-4xl font-bold animate-pulse flex justify-center mt-1">Powerful Tool</div>
+  <div class="text-blue-400 text-4xl font-bold animate-pulse flex justify-center mt-1">Powerful Tools</div>
   <main class="w-full max-w-6xl mx-auto px-4 py-12 md:px-6 md:py-16 lg:py-12 mt-0">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 

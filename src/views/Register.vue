@@ -101,7 +101,7 @@
               </div>
             </div>
           </el-form>
-          <a class="text-[#e53e3e] block text-center" href="/login">
+          <a class="text-[#e53e3e] block text-center" @click="$router.push({name:'Login'})">
             Already have an account?
           </a>
         </div>

@@ -93,7 +93,7 @@
             </div>
           </div>
           </el-form>
-          <a class="text-[#e53e3e] block text-center" href="/register">
+          <a class="text-[#e53e3e] block text-center" @click="$router.push({name:'Register'})">
             Register New User?
           </a>
         </div>
