@@ -69,7 +69,7 @@
             // 判断是否需要登录
             if (to.meta['auth']) {
                 //判断用户是否登录
-                if (store.state.userModule.token !== 'null') {
+                if (store.state.userModule.token !== 'null' || !store.state.userModule.token) {
                     // 这里还要判断token的有效性，比如有没有过期，需要后台发放token的时候携带的有效期
                     // 如果token无效，需要请求token
                     const token = store.state.userModule.token
