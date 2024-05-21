@@ -6,6 +6,7 @@
       mode="horizontal"
       :ellipsis="false"
       @select="handleSelect"
+      style="background-color: #f8f5f2"
   >
     <el-menu-item index="0" @click="$router.replace('home')">
       <img
